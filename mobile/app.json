@@ -1,7 +1,8 @@
 {
   "expo": {
+    "scheme": "mobile",
     "name": "mobile",
-    "slug": "mobile",
+    "slug": "running-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,16 +16,24 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.running.mobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.running.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ffc52581-12d4-4de5-8124-5cd3655408a8"
+      }
+    },
+    "owner": "takeshi8989"
   }
 }
