@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, Text, Pressable, Alert ,StyleSheet, ScrollView } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useRunner from '../hooks/useRunner';
@@ -12,7 +12,6 @@ interface Props {
 
 const RunningButtons = ({ scrollViewRef }: Props) => {
     const [isRunning, setIsRunning] = useAtom(isRunningAtom)
-    const [runners, setRunners] = useAtom(isRunningAtom)
 
     const { addNewRunner, removeRunner } = useRunner()
     const { watchUserLocation } = useRunning()
@@ -53,7 +52,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
         addNewRunner()
         scrollToBottom()
         setIsRunning(true)
-        // watchUserLocation()
+        watchUserLocation()
     }
 
 

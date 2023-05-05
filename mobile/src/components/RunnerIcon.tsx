@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import React from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { Runner } from '../types/Runner';
 
 
@@ -7,21 +7,12 @@ import { Runner } from '../types/Runner';
 const url: string = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsqlLXvQzap9hX2xdgmBKa-kxmoKP4G2ppPg&usqp=CAU'
 
 const RunnerIcon = ({runner}: {runner: Runner}) => {
-    
-    const [currentPosV, setCurrentPosV] = React.useState<number>(runner.positionV)
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setCurrentPosV(currentPosV => currentPosV + 5)
-    //     }, 1000);
-    //     return () => clearInterval(interval);
-    // }, []);
 
     return (
         <View style={{
             flex: 1,
             position: 'absolute',
-            bottom: currentPosV,
+            bottom: runner.positionV,
             left: runner.positionH,
         }}>
             <Image source={{uri: url}} style={styles.icon} />

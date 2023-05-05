@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import RunnerIcon from '../components/RunnerIcon';
 import { Runner } from '../types/Runner';
@@ -7,7 +7,7 @@ import RoadImage from '../components/RoadImage';
 import { ROAD_LENGTH_KM } from '../utils/constants';
 import { runnersAtom } from '../atoms/runner';
 import { useAtom } from 'jotai';
-import useRunning from '../hooks/useRunning';
+import { socket } from '../utils/socket';
 
 
 
@@ -17,7 +17,12 @@ for(let i = ROAD_LENGTH_KM; i > 0; i--) images.push(i)
 const HomeScreen = () => {
     const [runners, setRunners] = useAtom(runnersAtom)
     const scrollViewRef = useRef<ScrollView>(null);
-    const { watchUserLocation } = useRunning()
+    
+    useEffect(() => { 
+        socket.on('send_runners', (runners: Runner[]) => {
+            setRunners(runners)
+        })
+    }, [])
 
     return (
         <View style={styles.container}>
