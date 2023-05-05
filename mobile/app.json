@@ -17,7 +17,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.running.mobile"
+      "bundleIdentifier": "com.running.mobile",
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -34,6 +37,14 @@
         "projectId": "ffc52581-12d4-4de5-8124-5cd3655408a8"
       }
     },
-    "owner": "takeshi8989"
+    "owner": "takeshi8989",
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow running_app to use your location."
+        }
+      ]
+    ]
   }
 }

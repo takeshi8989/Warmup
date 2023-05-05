@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { isSignedInAtom, userInfoAtom } from '../jotai/auth';
+import { isSignedInAtom, userInfoAtom } from '../atoms/auth';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';

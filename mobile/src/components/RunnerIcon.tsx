@@ -10,12 +10,12 @@ const RunnerIcon = ({runner}: {runner: Runner}) => {
     
     const [currentPosV, setCurrentPosV] = React.useState<number>(runner.positionV)
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentPosV(currentPosV => currentPosV + 5)
-        }, 1000);
-        return () => clearInterval(interval);
-    }, []);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setCurrentPosV(currentPosV => currentPosV + 5)
+    //     }, 1000);
+    //     return () => clearInterval(interval);
+    // }, []);
 
     return (
         <View style={{

@@ -1,18 +1,21 @@
-import React from 'react'
-import { View, Text, Pressable, Alert ,StyleSheet, Dimensions, ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Text, Pressable, Alert ,StyleSheet, ScrollView } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Runner } from '../types/Runner';
+import useRunner from '../hooks/useRunner';
+import useRunning from '../hooks/useRunning';
+import { useAtom } from 'jotai';
+import { isRunningAtom } from '../atoms/runner';
 
 interface Props {
     scrollViewRef: React.RefObject<ScrollView>
-    isRunning: boolean
-    setIsRunning: React.Dispatch<React.SetStateAction<boolean>>
-    runners: Runner[]
-    setRunners: React.Dispatch<React.SetStateAction<Runner[]>>
 }
 
-const RunningButtons = ({scrollViewRef, isRunning, setIsRunning, runners, setRunners}: Props) => {
-    const windowWidth = Dimensions.get('window').width;
+const RunningButtons = ({ scrollViewRef }: Props) => {
+    const [isRunning, setIsRunning] = useAtom(isRunningAtom)
+    const [runners, setRunners] = useAtom(isRunningAtom)
+
+    const { addNewRunner, removeRunner } = useRunner()
+    const { watchUserLocation } = useRunning()
 
     const scrollToBottom = () => {
         scrollViewRef?.current?.scrollToEnd({ animated: true })
@@ -41,28 +44,18 @@ const RunningButtons = ({scrollViewRef, isRunning, setIsRunning, runners, setRun
             },
             {text: 'OK', onPress: () => {
                 console.log('start running')
-                addNewRunner()
-                scrollToBottom()
-                setIsRunning(true)
+                startRunning()
             }},
         ]);
     }
 
-    const addNewRunner = () => {
-        const posH = Math.floor(Math.random() * windowWidth - 50)
-        const newRunner: Runner = {
-            userId: 'abc',
-            username: 'abc',
-            imageUrl: '',
-            positionH: posH,
-            positionV: 0
-        }
-        setRunners([...runners, newRunner])
+    const startRunning = () => {
+        addNewRunner()
+        scrollToBottom()
+        setIsRunning(true)
+        // watchUserLocation()
     }
 
-    const removeRunner = () => {
-        setRunners(runners.filter(runner => runner.userId !== 'abc'))
-    }
 
     return (
         <View style={styles.container}>

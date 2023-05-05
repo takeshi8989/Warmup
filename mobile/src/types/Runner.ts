@@ -4,4 +4,7 @@ export interface Runner {
     imageUrl: string
     positionH: number
     positionV: number
+    latitude: number
+    longitude: number
+    speed: number
 }
