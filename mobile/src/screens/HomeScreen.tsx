@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View , Text} from 'react-native';
 import RunnerIcon from '../components/RunnerIcon';
 import { Runner } from '../types/Runner';
 import RunningButtons from '../components/RunningButtons';
@@ -8,6 +8,7 @@ import { ROAD_LENGTH_KM } from '../utils/constants';
 import { runnersAtom } from '../atoms/runner';
 import { useAtom } from 'jotai';
 import { socket } from '../utils/socket';
+import useAuthentication from '../hooks/useAuthentication';
 
 
 
@@ -18,11 +19,15 @@ const HomeScreen = () => {
     const [runners, setRunners] = useAtom(runnersAtom)
     const scrollViewRef = useRef<ScrollView>(null);
     
+    const { getUserData } = useAuthentication();
+
     useEffect(() => { 
+        getUserData()
         socket.on('send_runners', (runners: Runner[]) => {
             setRunners(runners)
         })
     }, [])
+
 
     return (
         <View style={styles.container}>
