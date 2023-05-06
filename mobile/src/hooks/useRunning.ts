@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 interface Props {
     watchUserLocation: () => void
+    stopUserLocation: () => void
 }
 
 interface Position {
@@ -34,7 +35,7 @@ const useRunning = (): Props => {
             socket.emit('change_runner_position', {
                 userId: 'abc',
                 speed: 0,
-                distance: 100,
+                distance: 20,
             })
         }, 1000);
     }
@@ -56,7 +57,11 @@ const useRunning = (): Props => {
         })
     }
 
-    return { watchUserLocation }
+    const stopUserLocation = async () => {
+        await Location.stopLocationUpdatesAsync('watchLoc')
+    }
+
+    return { watchUserLocation, stopUserLocation }
 }
 
 export default useRunning;

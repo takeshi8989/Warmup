@@ -18,7 +18,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
     const runners = useAtomValue(runnersAtom)
 
     const { addNewRunner, removeRunner } = useRunner()
-    const { watchUserLocation } = useRunning()
+    const { watchUserLocation, stopUserLocation } = useRunning()
 
     const scrollToBottom = () => {
         scrollViewRef?.current?.scrollToEnd({ animated: true })
@@ -43,6 +43,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
                 console.log('stop running')
                 removeRunner()
                 setIsRunning(false)
+                stopUserLocation()
             }},
         ]);
     }
