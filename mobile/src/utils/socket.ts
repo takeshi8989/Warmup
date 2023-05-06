@@ -1,5 +1,8 @@
 import { io } from 'socket.io-client';
-const URL: string = 'http://localhost:3000';
+const ECS_IP: string = '34.218.64.20'
+const PORT: string = '3000'
+const LOCAL = 'localhost'
+const URL: string = 'http://' + ECS_IP +':' + PORT;
 
 export const socket = io(
     URL, {

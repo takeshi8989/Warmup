@@ -43,12 +43,10 @@ const useRunning = (): Props => {
     const sendUserRunningStatus = (loc: Location.LocationObject): void => {
         let distance: number = 0;
         if(preCoords) {
-            distance = getDistanceFromLatLonInKm(preCoords.latitude, preCoords.longitude, loc.coords.latitude, loc.coords.longitude)
+            distance = getDistanceFromLatLonInKm(preCoords.latitude, preCoords.longitude, loc.coords.latitude, loc.coords.longitude) * 1000
         }
-        distance = 10
-        console.log(loc)
+        console.log(distance)
         socket.emit('change_runner_position', {
-            userId: 'abc',
             speed: loc.coords.speed,
             distance,
         })

@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
   socket.on('register_runner', (data) => {
     const runner: Runner = {
       userId: data.userId,
+      socketId: socket.id,
       username: 'test',
       imageUrl: 'https://picsum.photos/200',
       positionH: data.randPosH,
@@ -33,15 +34,16 @@ io.on('connection', (socket) => {
   });
 
   socket.on('change_runner_position', (data) => {
-    changeRunnerPosition(data.userId, data.speed, data.distance)
+    changeRunnerPosition(socket.id, data.speed, data.distance)
   });
 
-  socket.on('remove_runner', (userId) => {
-    removeRunner(userId)
+  socket.on('remove_runner', () => {
+    removeRunner(socket.id)
   });
 
   socket.on('disconnect', () => {
     console.log('user disconnected');
+    removeRunner(socket.id)
   })
 });
 
@@ -51,17 +53,17 @@ server.listen(PORT, () => {
 });
 
 
-const changeRunnerPosition = (userId: string, speed: number, distance: number) => {
+const changeRunnerPosition = (socketId: string, speed: number, distance: number) => {
   runners.forEach(runner => {
-    if (runner.userId === userId) {
+    if (runner.socketId === socketId) {
       runner.positionV = runner.positionV + distance
       runner.speed = speed
     }
   })
 }
 
-const removeRunner = (userId: string) => {
-  runners = runners.filter(runner => runner.userId !== userId)
+const removeRunner = (socketId: string) => {
+  runners = runners.filter(runner => runner.socketId !== socketId)
 }
 
 setInterval(() => {
