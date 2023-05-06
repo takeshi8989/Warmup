@@ -1,17 +1,21 @@
 import React from 'react'
-import { View, Text, Pressable, Alert ,StyleSheet, ScrollView } from 'react-native'
+import { View, Text, Pressable, Alert ,StyleSheet, ScrollView, Dimensions } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useRunner from '../hooks/useRunner';
 import useRunning from '../hooks/useRunning';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { isRunningAtom } from '../atoms/runner';
+import { runnersAtom } from '../atoms/runner';
+import { ROAD_LENGTH_KM, ROAD_IMAGE_HEIGHT } from '../utils/constants';
 
 interface Props {
     scrollViewRef: React.RefObject<ScrollView>
 }
 
 const RunningButtons = ({ scrollViewRef }: Props) => {
+    const windowHeight = Dimensions.get('window').height
     const [isRunning, setIsRunning] = useAtom(isRunningAtom)
+    const runners = useAtomValue(runnersAtom)
 
     const { addNewRunner, removeRunner } = useRunner()
     const { watchUserLocation } = useRunning()
@@ -20,7 +24,16 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
         scrollViewRef?.current?.scrollToEnd({ animated: true })
     }
 
+    const spotRunner = (): void => {
+        const userId = 'abc'
+        const runner = runners.find(runner => runner.userId === userId)
+        if (!runner) return
+        const top: number = (ROAD_IMAGE_HEIGHT * ROAD_LENGTH_KM) - runner.positionV
+        scrollViewRef?.current?.scrollTo({ y: top - windowHeight / 2, animated: true })
+    }
+
     const alertStop = () => {
+        spotRunner()
         Alert.alert('Stop Running?', '', [
             {
               text: 'Cancel',
@@ -29,7 +42,6 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
             {text: 'OK', onPress: () => {
                 console.log('stop running')
                 removeRunner()
-                // spotRunner()
                 setIsRunning(false)
             }},
         ]);
@@ -63,7 +75,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
                     <Pressable style={styles.stopButton} onPress={alertStop} >
                         <Text style={styles.buttonText}>Stop</Text>
                     </Pressable>
-                    <Pressable style={styles.targetButton} onPress={scrollToBottom} >
+                    <Pressable style={styles.targetButton} onPress={spotRunner} >
                         <MaterialCommunityIcons name="target" size={40} color="green" />
                     </Pressable>
                 </>

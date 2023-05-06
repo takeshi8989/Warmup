@@ -30,13 +30,13 @@ const useRunning = (): Props => {
         );
 
         // automove
-        // setInterval(() => {
-        //     socket.emit('change_runner_position', {
-        //         userId: 'abc',
-        //         speed: 0,
-        //         distance: 1,
-        //     })
-        // }, 1000);
+        setInterval(() => {
+            socket.emit('change_runner_position', {
+                userId: 'abc',
+                speed: 0,
+                distance: 100,
+            })
+        }, 1000);
     }
 
 
