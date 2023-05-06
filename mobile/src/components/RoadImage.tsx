@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { ROAD_LENGTH_KM, ROAD_IMAGE_HEIGHT } from '../utils/constants';

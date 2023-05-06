@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { isSignedInAtom, userInfoAtom } from '../atoms/auth';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
@@ -11,8 +11,8 @@ import { EXPO_CLIENT_ID, IOS_CLIENT_ID, ANDROID_CLIENT_ID } from '@env';
 WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = () => {
-    const [isSignedIn, setIsSignedIn] = useAtom(isSignedInAtom);
-    const [userInfo, setUserInfo] = useAtom(userInfoAtom);
+    const setIsSignedIn = useSetAtom(isSignedInAtom);
+    const setUserInfo = useSetAtom(userInfoAtom);
     const [token, setToken] = useState("");
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: EXPO_CLIENT_ID,
