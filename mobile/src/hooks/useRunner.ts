@@ -16,7 +16,7 @@ const useRunner = (): Props => {
     const addNewRunner = () => {
         if(!userInfo) return
         const randPosH = Math.floor(Math.random() * windowWidth - 50)
-        const userId: string = userInfo.id 
+        const userId: string = userInfo.id
         socket.emit('register_runner', {userId, randPosH})
     }
 

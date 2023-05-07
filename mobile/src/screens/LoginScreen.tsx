@@ -9,6 +9,7 @@ import { EXPO_CLIENT_ID, IOS_CLIENT_ID, ANDROID_CLIENT_ID, CLIENT_SECRET } from 
 import * as AuthSession from 'expo-auth-session';
 import { Image } from 'react-native';
 import useAuthentication from '../hooks/useAuthentication';
+import { User } from '../types/User';
 
 
 WebBrowser.maybeCompleteAuthSession();
@@ -66,8 +67,8 @@ const LoginScreen = () => {
     useEffect(() => {
       if (auth) {
         const processAuth = async () => {
-          const userid = await getUserData(auth.accessToken);
-          userSignIn(userid)
+          const user: User | null = await getUserData(auth.accessToken);
+          if(user) userSignIn(user)
         }
         processAuth();
       }

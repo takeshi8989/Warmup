@@ -3,10 +3,12 @@ import { isSignedInAtom, userInfoAtom, authAtom, requireTokenRereshAtom } from '
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EXPO_CLIENT_ID, CLIENT_SECRET } from '@env';
 import * as AuthSession from 'expo-auth-session';
+import axios from 'axios';
+import { User } from '../types/User';
 
 interface Props {
-    userSignIn: (userid: string) => void
-    getUserData: (token: string) => Promise<string>
+    userSignIn: (user: User) => void
+    getUserData: (token: string) => Promise<User | null>
     refreshToken: () => void
     logout: () => void
 }
@@ -17,15 +19,22 @@ const useAuthentication = (): Props => {
     const [auth, setAuth] = useAtom(authAtom);
     const [requireRefresh, setRequireRefresh] = useAtom(requireTokenRereshAtom);
 
-    const userSignIn = async (userid: string) => {
+    const userSignIn = async (user: User) => {
+      const data = {
+        "oauth_id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "picture": user.picture,
+      }
         try {
-          
+          const res = await axios.post(`https://wmfjfnvldl.execute-api.us-west-2.amazonaws.com/test/users/`, data)
+          console.log("users", res.data)
         } catch (error: any) {
-
+          console.log(error.message)
         }
     }
 
-    const getUserData = async (token: string): Promise<string> => {
+    const getUserData = async (token: string): Promise<User | null> => {
         try{
           const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
             headers: { Authorization: `Bearer ${token}` }
@@ -33,11 +42,11 @@ const useAuthentication = (): Props => {
   
           const user = await userInfoResponse.json();
           setUserInfo(user);
-          return user.id
+          return user
         } catch (error: any) {
           setIsSignedIn(false)
           console.log(error.message);
-          return ""
+          return null
         }
     };
 
