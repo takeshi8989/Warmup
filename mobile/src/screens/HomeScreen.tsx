@@ -8,7 +8,6 @@ import { ROAD_LENGTH_KM } from '../utils/constants';
 import { runnersAtom } from '../atoms/runner';
 import { useAtom } from 'jotai';
 import { socket } from '../utils/socket';
-import useAuthentication from '../hooks/useAuthentication';
 
 
 
@@ -18,11 +17,8 @@ for(let i = ROAD_LENGTH_KM; i > 0; i--) images.push(i)
 const HomeScreen = () => {
     const [runners, setRunners] = useAtom(runnersAtom)
     const scrollViewRef = useRef<ScrollView>(null);
-    
-    const { getUserData } = useAuthentication();
 
     useEffect(() => { 
-        getUserData()
         socket.on('send_runners', (runners: Runner[]) => {
             setRunners(runners)
         })

@@ -20,7 +20,7 @@ const LoginScreen = () => {
     const [auth, setAuth] = useAtom(authAtom);
     const [requireRefresh, setRequireRefresh] = useAtom(requireTokenRereshAtom);
 
-    const { getUserData, refreshToken, logout } = useAuthentication();
+    const { userSignIn, getUserData, refreshToken, logout } = useAuthentication();
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: EXPO_CLIENT_ID,
@@ -62,6 +62,16 @@ const LoginScreen = () => {
       getPersistedAuth();
       
     }, []);
+
+    useEffect(() => {
+      if (auth) {
+        const processAuth = async () => {
+          const userid = await getUserData(auth.accessToken);
+          userSignIn(userid)
+        }
+        processAuth();
+      }
+    }, [auth]);
 
     const showUserData = () => {
       if (userInfo) {

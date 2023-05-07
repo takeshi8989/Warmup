@@ -5,7 +5,8 @@ import { EXPO_CLIENT_ID, CLIENT_SECRET } from '@env';
 import * as AuthSession from 'expo-auth-session';
 
 interface Props {
-    getUserData: () => void
+    userSignIn: (userid: string) => void
+    getUserData: (token: string) => Promise<string>
     refreshToken: () => void
     logout: () => void
 }
@@ -16,17 +17,27 @@ const useAuthentication = (): Props => {
     const [auth, setAuth] = useAtom(authAtom);
     const [requireRefresh, setRequireRefresh] = useAtom(requireTokenRereshAtom);
 
-    const getUserData = async () => {
+    const userSignIn = async (userid: string) => {
+        try {
+          
+        } catch (error: any) {
+
+        }
+    }
+
+    const getUserData = async (token: string): Promise<string> => {
         try{
           const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: { Authorization: `Bearer ${auth?.accessToken}` }
+            headers: { Authorization: `Bearer ${token}` }
           });
   
           const user = await userInfoResponse.json();
           setUserInfo(user);
+          return user.id
         } catch (error: any) {
           setIsSignedIn(false)
           console.log(error.message);
+          return ""
         }
     };
 
@@ -70,7 +81,7 @@ const useAuthentication = (): Props => {
         }
     };
 
-    return { getUserData, refreshToken, logout }
+    return { userSignIn, getUserData, refreshToken, logout }
 }
 
 export default useAuthentication
