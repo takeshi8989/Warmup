@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import { Runner } from './types/Runner';
+import axios from 'axios';
 
 const app = express();
 const server = http.createServer(app);
@@ -20,12 +21,14 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
 
-  socket.on('register_runner', (data) => {
+  socket.on('register_runner', async (data) => {
+    const user = await getUserById(data.userId)
+    if(!user) return
     const runner: Runner = {
-      userId: data.userId,
+      userId: user.oauth_id,
       socketId: socket.id,
-      username: 'test',
-      imageUrl: 'https://picsum.photos/200',
+      username: user.name,
+      picture: user.picture,
       positionH: data.randPosH,
       positionV: 0,
       speed: 0
@@ -64,6 +67,19 @@ const changeRunnerPosition = (socketId: string, speed: number, distance: number)
 
 const removeRunner = (socketId: string) => {
   runners = runners.filter(runner => runner.socketId !== socketId)
+}
+
+const getUserById = async (userId: string) => {
+  try {
+    const res = await axios.get(`https://wmfjfnvldl.execute-api.us-west-2.amazonaws.com/test/users/${userId}`)
+    if(res.status === 200) {
+      return res.data
+    } else {
+      return null
+    }
+  } catch (error: any) {
+    console.log(error.message)
+  }
 }
 
 setInterval(() => {

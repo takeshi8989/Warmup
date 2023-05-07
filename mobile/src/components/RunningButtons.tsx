@@ -7,6 +7,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { isRunningAtom } from '../atoms/runner';
 import { runnersAtom } from '../atoms/runner';
 import { ROAD_LENGTH_KM, ROAD_IMAGE_HEIGHT } from '../utils/constants';
+import { userInfoAtom } from '../atoms/auth';
 
 interface Props {
     scrollViewRef: React.RefObject<ScrollView>
@@ -16,6 +17,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
     const windowHeight = Dimensions.get('window').height
     const [isRunning, setIsRunning] = useAtom(isRunningAtom)
     const runners = useAtomValue(runnersAtom)
+    const userInfo = useAtomValue(userInfoAtom)
 
     const { addNewRunner, removeRunner } = useRunner()
     const { watchUserLocation, stopUserLocation } = useRunning()
@@ -25,7 +27,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
     }
 
     const spotRunner = (): void => {
-        const userId = 'abc'
+        const userId = userInfo?.id
         const runner = runners.find(runner => runner.userId === userId)
         if (!runner) return
         const top: number = (ROAD_IMAGE_HEIGHT * ROAD_LENGTH_KM) - runner.positionV

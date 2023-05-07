@@ -2,6 +2,7 @@ import { Dimensions } from 'react-native'
 import { socket } from '../utils/socket';
 import { useAtomValue } from 'jotai';
 import { userInfoAtom } from '../atoms/auth';
+import { RUNNER_SIZE } from '../utils/constants';
 
 interface Props {
     addNewRunner: () => void
@@ -15,7 +16,7 @@ const useRunner = (): Props => {
 
     const addNewRunner = () => {
         if(!userInfo) return
-        const randPosH = Math.floor(Math.random() * windowWidth - 50)
+        const randPosH = Math.floor(Math.random() * (windowWidth - RUNNER_SIZE * 3)) + RUNNER_SIZE
         const userId: string = userInfo.id
         socket.emit('register_runner', {userId, randPosH})
     }

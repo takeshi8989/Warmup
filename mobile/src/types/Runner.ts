@@ -1,7 +1,7 @@
 export interface Runner {
     userId: string
     username: string
-    imageUrl: string
+    picture: string
     positionH: number
     positionV: number
     latitude: number
