@@ -8,12 +8,18 @@ import { isRunningAtom } from '../atoms/runner';
 import { runnersAtom } from '../atoms/runner';
 import { ROAD_LENGTH_KM, ROAD_IMAGE_HEIGHT } from '../utils/constants';
 import { userInfoAtom } from '../atoms/auth';
+import useFootstepsAudio from '../hooks/useFootstepsAudio';
+
+
+
 
 interface Props {
     scrollViewRef: React.RefObject<ScrollView>
 }
 
 const RunningButtons = ({ scrollViewRef }: Props) => {
+    const  { playSound } = useFootstepsAudio()
+
     const windowHeight = Dimensions.get('window').height
     const [isRunning, setIsRunning] = useAtom(isRunningAtom)
     const runners = useAtomValue(runnersAtom)
@@ -51,6 +57,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
     }
 
     const alertRun = () => {
+        playSound()
         Alert.alert('Start Running?', '', [
             {
               text: 'Cancel',

@@ -7,7 +7,7 @@ const RoadImage = ({i}: {i: number}) => {
     const len: number = (ROAD_LENGTH_KM - i) * ROAD_IMAGE_HEIGHT
     return (
         <>
-            <ImageBackground source={require('../../assets/road.jpg')} style={styles.image} />
+            <ImageBackground source={require('../../assets/images/road.jpg')} style={styles.image} />
             <View style={{flexDirection: 'row', alignItems: 'center', position: 'absolute', top: len}} >
                 <View style={styles.line} />
                 <View>
