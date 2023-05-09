@@ -14,6 +14,28 @@ const io = new Server(server, {
 });
 
 let runners: Runner[] = [];
+let r: Runner = {
+  userId: 'usei',
+  socketId: 'fad',
+  username: 'tester',
+  picture: '',
+  positionH: 200,
+  positionV: 300,
+  speed: 0
+}
+
+let r2: Runner = {
+  userId: 'usei2',
+  socketId: 'fadfalk',
+  username: 'testefsr',
+  picture: '',
+  positionH: 170,
+  positionV: 700,
+  speed: 0
+}
+
+runners.push(r)
+runners.push(r2)
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');

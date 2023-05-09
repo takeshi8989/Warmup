@@ -1,29 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
+import { Runner } from '../types/Runner';
 
 const useFootstepsAudio = () => {
-    const [sound, setSound] = useState<Audio.Sound>();
+    const [sound, setSound] = useState<Audio.Sound | null>(null);
 
-    useEffect(() => {
-        return sound
-          ? () => {
-              console.log('Unloading Sound');
-              sound.unloadAsync();
+
+    const playSound= async (nearbyRunners: Runner[]) => {
+        await Audio.setAudioModeAsync({playsInSilentModeIOS: true})
+        if(!nearbyRunners.length) {
+            setSound(null);
+            return
+        }
+
+
+        
+        if(!sound) {
+            console.log("sound")
+            const { sound } = await Audio.Sound.createAsync(
+                require('../../assets/audios/footsteps_base.mp3')
+            );
+            setSound(sound);
+            sound._onPlaybackStatusUpdate = (status) => {
+                if(status.isLoaded && status.didJustFinish) {
+                    setSound(null);
+                }
             }
-          : undefined;
-      }, [sound]);
+            await sound.playAsync();
+        }
+    }
+    
 
-    async function playSound() {
-        await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-    
-        const { sound } = await Audio.Sound.createAsync( require('../../assets/audios/footsteps_base.mp3')
-        );
-        setSound(sound);
-    
-        await sound.playAsync();
+    const stopSound = async () => {
+        if(sound) {
+            setSound(null);
+        }
     }
 
-    return { playSound }
+    return { playSound, stopSound }
 }
 
 export default useFootstepsAudio;

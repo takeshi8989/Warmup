@@ -44,7 +44,7 @@ const useAuthentication = (): Props => {
           setUserInfo(user);
           return user
         } catch (error: any) {
-          setIsSignedIn(false)
+          // setIsSignedIn(false)
           console.log(error.message);
           return null
         }
@@ -67,6 +67,7 @@ const useAuthentication = (): Props => {
           setIsSignedIn(true);
   
         } catch (error: any) {
+          setIsSignedIn(true);
           console.log(error.message);
         }
     };

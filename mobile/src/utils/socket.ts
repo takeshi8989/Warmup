@@ -6,6 +6,6 @@ const URL: string = 'http://' + LOCAL +':' + PORT;
 
 export const socket = io(
     URL, {
-        autoConnect: true,
+        autoConnect: true
     }
 );

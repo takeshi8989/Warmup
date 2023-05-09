@@ -4,5 +4,6 @@ import * as Location from 'expo-location';
 
 export const isRunningAtom = atom<boolean>(false);
 export const runnersAtom = atom<Runner[]>([]);
+export const nearbyRunnersAtom = atom<Runner[]>([]);
 
 export const watchTaskAtom = atom<Location.LocationSubscription | null>(null)

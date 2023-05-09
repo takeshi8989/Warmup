@@ -3,16 +3,18 @@ import { socket } from '../utils/socket';
 import { useAtomValue } from 'jotai';
 import { userInfoAtom } from '../atoms/auth';
 import { RUNNER_SIZE } from '../utils/constants';
+import { Runner } from '../types/Runner';
 
 interface Props {
     addNewRunner: () => void
     removeRunner: () => void
+    getNearbyRunners: (runners: Runner[]) => Runner[]
 }
 
 const useRunner = (): Props => {
     const windowWidth = Dimensions.get('window').width;
     const userInfo = useAtomValue(userInfoAtom)
-    
+
 
     const addNewRunner = () => {
         if(!userInfo) return
@@ -25,7 +27,17 @@ const useRunner = (): Props => {
         socket.emit('remove_runner')
     }
 
-    return { addNewRunner, removeRunner }
+    const getNearbyRunners = (runners: Runner[]) => {
+        const myRunner = runners.find(runner => runner.userId === userInfo?.id)
+        if(!myRunner) return []
+        const nearbyRunners = runners.filter(runner => {
+            const distance = Math.abs(myRunner.positionV - runner.positionV)
+            return distance <= 100 && runner.userId !== myRunner.userId
+        })
+        return nearbyRunners
+    }
+
+    return { addNewRunner, removeRunner, getNearbyRunners }
 }
 
 export default useRunner;

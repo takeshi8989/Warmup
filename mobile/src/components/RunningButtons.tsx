@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useRunner from '../hooks/useRunner';
 import useRunning from '../hooks/useRunning';
 import { useAtom, useAtomValue } from 'jotai';
-import { isRunningAtom } from '../atoms/runner';
+import { isRunningAtom, nearbyRunnersAtom } from '../atoms/runner';
 import { runnersAtom } from '../atoms/runner';
 import { ROAD_LENGTH_KM, ROAD_IMAGE_HEIGHT } from '../utils/constants';
 import { userInfoAtom } from '../atoms/auth';
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const RunningButtons = ({ scrollViewRef }: Props) => {
-    const  { playSound } = useFootstepsAudio()
+    const  { stopSound } = useFootstepsAudio()
 
     const windowHeight = Dimensions.get('window').height
     const [isRunning, setIsRunning] = useAtom(isRunningAtom)
@@ -52,12 +52,12 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
                 removeRunner()
                 setIsRunning(false)
                 stopUserLocation()
+                stopSound()
             }},
         ]);
     }
 
     const alertRun = () => {
-        playSound()
         Alert.alert('Start Running?', '', [
             {
               text: 'Cancel',
