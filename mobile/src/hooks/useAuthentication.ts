@@ -1,7 +1,7 @@
 import { useAtom, useSetAtom } from 'jotai';
 import { isSignedInAtom, userInfoAtom, authAtom, requireTokenRereshAtom } from '../atoms/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { EXPO_CLIENT_ID, CLIENT_SECRET } from '@env';
+import { EXPO_CLIENT_ID, CLIENT_SECRET, API_SERVER_URL, API_SERVER_STAGE } from '@env';
 import * as AuthSession from 'expo-auth-session';
 import axios from 'axios';
 import { User } from '../types/User';
@@ -27,27 +27,27 @@ const useAuthentication = (): Props => {
         "picture": user.picture,
       }
         try {
-          const res = await axios.post(`https://wmfjfnvldl.execute-api.us-west-2.amazonaws.com/test/users/`, data)
+          const res = await axios.post(`${API_SERVER_URL}/${API_SERVER_STAGE}/users/`, data)
           console.log("users", res.data)
         } catch (error: any) {
-          console.log(error.message)
+          console.log("user already exists")
         }
     }
 
     const getUserData = async (token: string): Promise<User | null> => {
-        try{
-          const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-  
-          const user = await userInfoResponse.json();
-          setUserInfo(user);
-          return user
-        } catch (error: any) {
-          // setIsSignedIn(false)
-          console.log(error.message);
-          return null
-        }
+      if(!token) return null
+      try{
+        const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const user = await userInfoResponse.json();
+        setUserInfo(user);
+        return user
+      } catch (error: any) {
+        console.log(error.message);
+        return null
+      }
     };
 
     const refreshToken = async () => {
@@ -67,7 +67,7 @@ const useAuthentication = (): Props => {
           setIsSignedIn(true);
   
         } catch (error: any) {
-          setIsSignedIn(true);
+          setRequireRefresh(false)
           console.log(error.message);
         }
     };

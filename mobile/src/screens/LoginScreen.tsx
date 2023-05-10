@@ -7,7 +7,6 @@ import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EXPO_CLIENT_ID, IOS_CLIENT_ID, ANDROID_CLIENT_ID, CLIENT_SECRET } from '@env';
 import * as AuthSession from 'expo-auth-session';
-import { Image } from 'react-native';
 import useAuthentication from '../hooks/useAuthentication';
 import { User } from '../types/User';
 
@@ -61,7 +60,6 @@ const LoginScreen = () => {
         }
       };
       getPersistedAuth();
-      
     }, []);
 
     useEffect(() => {
@@ -69,35 +67,18 @@ const LoginScreen = () => {
         const processAuth = async () => {
           const user: User | null = await getUserData(auth.accessToken);
           if(user) userSignIn(user)
+          setIsSignedIn(true);
         }
         processAuth();
       }
     }, [auth]);
 
-    const showUserData = () => {
-      if (userInfo) {
-        return (
-          <View style={styles.userInfo}>
-            <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
-            <Text>Welcome {userInfo.name}</Text>
-            <Text>{userInfo.email}</Text>
-          </View>
-        );
-      }
-    };
-
     if (requireRefresh) {
-      return (
-        <View style={styles.container}>
-          <Text>Token requires refresh...</Text>
-          <Button title="Refresh Token" onPress={refreshToken} />
-        </View>
-      )
+      refreshToken();
     }
 
     return (
         <View style={styles.container}>
-            {showUserData()}
             <Button
                 title={"Sign in with Google"}
                 disabled={!request}

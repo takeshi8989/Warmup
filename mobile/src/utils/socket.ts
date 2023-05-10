@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
-const ECS_IP: string = '34.221.207.243'
+import { WS_SERVER_URL } from '@env';
+
 const PORT: string = '3000'
-const LOCAL = 'localhost'
-const URL: string = 'http://' + LOCAL +':' + PORT;
+const LOCALHOST = 'http://localhost:' + PORT
 
 export const socket = io(
-    URL, {
+    WS_SERVER_URL, {
         autoConnect: true
     }
 );
