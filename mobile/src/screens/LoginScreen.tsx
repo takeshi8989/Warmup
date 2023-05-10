@@ -86,7 +86,7 @@ const LoginScreen = () => {
       }
     };
 
-    if (!requireRefresh) {
+    if (requireRefresh) {
       return (
         <View style={styles.container}>
           <Text>Token requires refresh...</Text>
