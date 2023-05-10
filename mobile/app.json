@@ -1,16 +1,17 @@
 {
   "expo": {
     "scheme": "mobile",
-    "name": "mobile",
+    "name": "Warmup",
     "slug": "running-app",
+    "description": "Warmup is a running app that helps you to run with people virtually.",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/warmup_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/warmup_splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,18 +20,29 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.running.mobile",
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "audio"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "audio"
+        ]
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/warmup_icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.running.mobile"
+      "package": "com.running.mobile",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/warmup_icon.png"
     },
     "extra": {
       "eas": {
@@ -42,15 +54,21 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow running_app to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Allow Warmup to use your location."
         }
       ],
       [
         "expo-av",
         {
-          "microphonePermission": "Allow running_app to access your microphone."
+          "microphonePermission": "Allow Warmup to access your microphone."
         }
       ]
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ffc52581-12d4-4de5-8124-5cd3655408a8"
+    }
   }
 }
