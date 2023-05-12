@@ -30,10 +30,6 @@ const HomeScreen = () => {
         playSound(getNearbyRunners(runners))
     }
 
-    useEffect(() => {
-        if(!userInfo) setIsSignedIn(false)
-    }, [])
-
 
     useEffect(() => { 
         socket.on('send_runners', receiveRunners)

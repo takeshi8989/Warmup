@@ -12,11 +12,8 @@ const useFootstepsAudio = () => {
             setSound(null);
             return
         }
-
-
         
         if(!sound) {
-            console.log("sound")
             const { sound } = await Audio.Sound.createAsync(
                 require('../../assets/audios/footsteps_base.mp3')
             );

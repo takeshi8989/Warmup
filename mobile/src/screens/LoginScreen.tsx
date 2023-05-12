@@ -34,7 +34,9 @@ const LoginScreen = () => {
         }
     });
 
+
     useEffect(() => {
+      console.log("Response: ", request)
         if (response?.type === "success" && response.authentication) {
           setAuth(response.authentication)
           const persistAuth = async () => {
@@ -73,8 +75,12 @@ const LoginScreen = () => {
       }
     }, [auth]);
 
-    if (requireRefresh) {
-      refreshToken();
+    if (auth && requireRefresh) {
+      return (
+        <View style={styles.container}>
+          <Button title="Refresh token" onPress={refreshToken} />
+        </View>
+      )
     }
 
     return (

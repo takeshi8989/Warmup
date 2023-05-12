@@ -1,7 +1,7 @@
 import { Dimensions } from 'react-native'
 import { socket } from '../utils/socket';
-import { useAtomValue } from 'jotai';
-import { userInfoAtom } from '../atoms/auth';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { isSignedInAtom, userInfoAtom } from '../atoms/auth';
 import { RUNNER_SIZE } from '../utils/constants';
 import { Runner } from '../types/Runner';
 
@@ -14,10 +14,14 @@ interface Props {
 const useRunner = (): Props => {
     const windowWidth = Dimensions.get('window').width;
     const userInfo = useAtomValue(userInfoAtom)
+    const setIsSignedIn = useSetAtom(isSignedInAtom);
 
 
     const addNewRunner = () => {
-        if(!userInfo) return
+        if(!userInfo) {
+            setIsSignedIn(false)
+            return
+        }
         const randPosH = Math.floor(Math.random() * (windowWidth - RUNNER_SIZE * 3)) + RUNNER_SIZE
         const userId: string = userInfo.id
         socket.emit('register_runner', {userId, randPosH})

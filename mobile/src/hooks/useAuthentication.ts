@@ -1,7 +1,7 @@
 import { useAtom, useSetAtom } from 'jotai';
 import { isSignedInAtom, userInfoAtom, authAtom, requireTokenRereshAtom } from '../atoms/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { EXPO_CLIENT_ID, CLIENT_SECRET, API_SERVER_URL, API_SERVER_STAGE } from '@env';
+import { EXPO_CLIENT_ID, CLIENT_SECRET, API_SERVER_URL, API_SERVER_STAGE, IOS_CLIENT_ID, ANDROID_CLIENT_ID } from '@env';
 import * as AuthSession from 'expo-auth-session';
 import axios from 'axios';
 import { User } from '../types/User';
@@ -35,13 +35,14 @@ const useAuthentication = (): Props => {
     }
 
     const getUserData = async (token: string): Promise<User | null> => {
+
       if(!token) return null
       try{
         const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
           headers: { Authorization: `Bearer ${token}` }
         });
 
-        const user = await userInfoResponse.json();
+        const user: User = await userInfoResponse.json();
         setUserInfo(user);
         return user
       } catch (error: any) {
@@ -52,6 +53,7 @@ const useAuthentication = (): Props => {
 
     const refreshToken = async () => {
         try {
+          console.log(auth)
           const tokenResult = await AuthSession.refreshAsync({
             clientId: EXPO_CLIENT_ID,
             clientSecret: CLIENT_SECRET,
@@ -65,9 +67,8 @@ const useAuthentication = (): Props => {
           await AsyncStorage.setItem("auth", JSON.stringify(tokenResult));
           setRequireRefresh(false);
           setIsSignedIn(true);
-  
+         
         } catch (error: any) {
-          setRequireRefresh(false)
           console.log(error.message);
         }
     };
