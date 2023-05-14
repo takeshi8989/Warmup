@@ -7,7 +7,13 @@ const useFootstepsAudio = () => {
 
 
     const playSound= async (nearbyRunners: Runner[]) => {
-        await Audio.setAudioModeAsync({playsInSilentModeIOS: true})
+        await Audio.setAudioModeAsync({
+            allowsRecordingIOS: false,
+            staysActiveInBackground: true,
+            playsInSilentModeIOS: true,
+            shouldDuckAndroid: true,
+            playThroughEarpieceAndroid: false
+        })
         if(!nearbyRunners.length) {
             setSound(null);
             return
