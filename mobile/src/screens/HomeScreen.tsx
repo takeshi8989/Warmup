@@ -19,8 +19,6 @@ for(let i = ROAD_LENGTH_KM; i > 0; i--) images.push(i)
 
 const HomeScreen = () => {
     const [runners, setRunners] = useAtom(runnersAtom)
-    const setIsSignedIn = useSetAtom(isSignedInAtom)
-    const userInfo = useAtomValue(userInfoAtom)
     const scrollViewRef = useRef<ScrollView>(null);
     const { getNearbyRunners } = useRunner();
     const { playSound } = useFootstepsAudio();

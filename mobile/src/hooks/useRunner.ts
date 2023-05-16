@@ -36,7 +36,7 @@ const useRunner = (): Props => {
         if(!myRunner) return []
         const nearbyRunners = runners.filter(runner => {
             const distance = Math.abs(myRunner.positionV - runner.positionV)
-            return distance <= 100 && runner.userId !== myRunner.userId
+            return distance <= 100
         })
         return nearbyRunners
     }

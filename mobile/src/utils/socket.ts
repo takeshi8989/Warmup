@@ -5,7 +5,7 @@ const PORT: string = '3000'
 const LOCALHOST = 'http://localhost:' + PORT
 
 export const socket = io(
-    LOCALHOST, {
+    WS_SERVER_URL, {
         autoConnect: true
     }
 );

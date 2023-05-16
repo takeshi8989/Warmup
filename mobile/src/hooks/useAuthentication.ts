@@ -28,7 +28,6 @@ const useAuthentication = (): Props => {
       }
         try {
           const res = await axios.post(`${API_SERVER_URL}/${API_SERVER_STAGE}/users/`, data)
-          console.log("users", res.data)
         } catch (error: any) {
           console.log("user already exists")
         }
