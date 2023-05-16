@@ -21,15 +21,17 @@ const HomeScreen = () => {
     const [runners, setRunners] = useAtom(runnersAtom)
     const scrollViewRef = useRef<ScrollView>(null);
     const { getNearbyRunners } = useRunner();
-    const { playSound } = useFootstepsAudio();
+    const { playSound, chooseAudio } = useFootstepsAudio();
+    const userInfo = useAtomValue(userInfoAtom)
 
     const receiveRunners = (runners: Runner[]) => {
         setRunners(runners)
-        playSound(getNearbyRunners(runners))
+        chooseAudio(getNearbyRunners(runners))
     }
 
 
     useEffect(() => { 
+        // console.log(userInfo)
         socket.on('send_runners', receiveRunners)
         return () => {
             socket.off('send_runners', receiveRunners)

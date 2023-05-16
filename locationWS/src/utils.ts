@@ -9,7 +9,7 @@ let r: Runner = {
   socketId: 'fad',
   username: 'tester',
   picture: '',
-  positionH: 200,
+  positionH: 300,
   positionV: 300,
   speed: 0
 }
@@ -19,7 +19,7 @@ let r2: Runner = {
   socketId: 'fadfalk',
   username: 'testefsr',
   picture: '',
-  positionH: 170,
+  positionH: 100,
   positionV: 700,
   speed: 0
 }

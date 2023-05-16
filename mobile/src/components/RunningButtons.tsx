@@ -18,7 +18,7 @@ interface Props {
 }
 
 const RunningButtons = ({ scrollViewRef }: Props) => {
-    const  { stopSound } = useFootstepsAudio()
+    const  { playSound, stopSound } = useFootstepsAudio()
 
     const windowHeight = Dimensions.get('window').height
     const [isRunning, setIsRunning] = useAtom(isRunningAtom)
@@ -66,6 +66,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
             {text: 'OK', onPress: () => {
                 console.log('start running')
                 startRunning()
+                playSound()
             }},
         ]);
     }

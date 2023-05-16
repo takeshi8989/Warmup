@@ -8,10 +8,10 @@ import { userInfoAtom } from '../atoms/auth';
 const useFootstepsAudio = () => {
     const [sound, setSound] = useAtom(soundAtom)
     const userInfo = useAtomValue(userInfoAtom)
+    const [soundSrc, setSoundSrc] = useState<string>('base')
 
 
-    const playSound= async (nearbyRunners: Runner[]) => {
-        if(nearbyRunners.length >1 && sound == null)console.log("over")
+    const playSound= async () => {
         await Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
             staysActiveInBackground: true,
@@ -19,25 +19,13 @@ const useFootstepsAudio = () => {
             shouldDuckAndroid: true,
             playThroughEarpieceAndroid: false,
         })
-        if(nearbyRunners.length <= 1) {
-            setSound(null);
-            return
-        }
         
         if(!sound) {
-            const src = chooseAudio(nearbyRunners);
-            if(src == null) return;
-            const { sound } = await Audio.Sound.createAsync(src);
+            const { sound } = await Audio.Sound.createAsync(require('../../assets/audios/footsteps_base.mp3'));
             setSound(sound);
-            sound._onPlaybackStatusUpdate = (status) => {
-                if(status.isLoaded && status.didJustFinish) {
-                    setSound(null);
-                }
-            }
-            
-            // await
+            await sound.setVolumeAsync(0)
             await sound.playAsync();
-            
+            await sound.setIsLoopingAsync(true);
         }
     }
     
@@ -51,24 +39,40 @@ const useFootstepsAudio = () => {
         setSound(null);
     }
 
-    const chooseAudio = (nearbyRunners: Runner[]) => {
-        if(!nearbyRunners.length || !userInfo) {
-            return null
+    const chooseAudio = async (nearbyRunners: Runner[]) => {
+        if(nearbyRunners.length <= 1|| !userInfo) {
+            await sound?.setVolumeAsync(0);
+            return
         }
         const me = nearbyRunners.filter(runner => runner.userId === userInfo.id)[0];
         if(!me) {  
-            return null
+            await sound?.setVolumeAsync(0);
+            return
         }
+
+        await sound?.setVolumeAsync(1);
 
         const leftRunners = nearbyRunners.filter(runner => runner.positionH < me.positionH);
         const rightRunners = nearbyRunners.filter(runner => runner.positionH > me.positionH);
+        if(soundSrc == 'left' && leftRunners.length > rightRunners.length) return
+        if(soundSrc == 'right' && rightRunners.length > leftRunners.length) return
 
         const leftSrc = require('../../assets/audios/left_follow.mp3');
         const rightSrc = require('../../assets/audios/right_follow.mp3');
-        return leftRunners.length > rightRunners.length ? leftSrc : rightSrc;
+
+        if(leftRunners.length > rightRunners.length) setSoundSrc('left')
+        else setSoundSrc('right')
+
+        
+        await sound?.stopAsync();
+        await sound?.unloadAsync();
+        await sound?.loadAsync(leftRunners.length > rightRunners.length ? leftSrc : rightSrc);
+        await sound?.playAsync();
+        // await sound?.unloadAsync();
+        // await sound?.loadAsync(leftSrc);
     }
 
-    return { playSound, stopSound }
+    return { playSound, stopSound, chooseAudio }
 }
 
 export default useFootstepsAudio;

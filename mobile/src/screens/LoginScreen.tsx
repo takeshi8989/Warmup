@@ -68,8 +68,16 @@ const LoginScreen = () => {
       if (auth) {
         const processAuth = async () => {
           const user: User | null = await getUserData(auth.accessToken);
-          if(user) userSignIn(user)
-          setIsSignedIn(true);
+          if(user) {
+            userSignIn(user)
+            setIsSignedIn(true);
+          }
+          else {
+            console.log("HELPME")
+            setIsSignedIn(false);
+            setAuth(null);
+          }
+          
         }
         processAuth();
       }

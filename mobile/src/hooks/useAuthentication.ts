@@ -34,14 +34,14 @@ const useAuthentication = (): Props => {
     }
 
     const getUserData = async (token: string): Promise<User | null> => {
-
       if(!token) return null
       try{
         const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
           headers: { Authorization: `Bearer ${token}` }
         });
-
+        
         const user: User = await userInfoResponse.json();
+        if(!user.id) return null
         setUserInfo(user);
         return user
       } catch (error: any) {
