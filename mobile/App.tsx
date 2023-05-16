@@ -4,10 +4,15 @@ import { useAtom } from 'jotai';
 import { isSignedInAtom } from './src/atoms/auth';
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import SettingScreen from './src/screens/SettingScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { socket } from './src/utils/socket'
 import * as Location from 'expo-location';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+
+const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
 
@@ -35,16 +40,38 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
+      <Tab.Navigator
+      initialRouteName='Setting'
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        tabBarActiveTintColor: 'green',
+        tabBarInactiveTintColor: 'gray',
       }}>
         {isSignedIn ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <>
+            <Tab.Screen name="Run" component={HomeScreen} options={tabOptions.home} />
+            <Tab.Screen name="Setting" component={SettingScreen} options={tabOptions.setting} />
+          </>
         ) : (
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Tab.Screen name="Login" component={LoginScreen} />
         )}
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   )
+}
+
+
+const tabOptions = {
+  home: {
+    tabBarLabel: 'Run',
+    tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+      <MaterialCommunityIcons name="run" color={color} size={size} />
+    ),
+  },
+  setting: {
+    tabBarLabel: 'Setting',
+    tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+      <Ionicons name="settings-sharp" size={size} color={color} />
+    ),
+  },
 }

@@ -1,5 +1,6 @@
 import React, {useRef, useEffect} from 'react';
-import { ScrollView, StyleSheet, View , Text} from 'react-native';
+import { ScrollView, StyleSheet, View , Text, Button, Pressable} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import RunnerIcon from '../components/RunnerIcon';
 import { Runner } from '../types/Runner';
 import RunningButtons from '../components/RunningButtons';
