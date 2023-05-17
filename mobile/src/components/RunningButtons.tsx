@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useRunner from '../hooks/useRunner';
 import useRunning from '../hooks/useRunning';
 import { useAtom, useAtomValue } from 'jotai';
-import { isRunningAtom, nearbyRunnersAtom } from '../atoms/runner';
+import { activePaceAtom, isRunningAtom, nearbyRunnersAtom } from '../atoms/runner';
 import { runnersAtom } from '../atoms/runner';
 import { ROAD_LENGTH_KM, ROAD_IMAGE_HEIGHT } from '../utils/constants';
 import { userInfoAtom } from '../atoms/auth';

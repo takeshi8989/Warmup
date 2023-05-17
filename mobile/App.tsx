@@ -53,7 +53,7 @@ export default function App() {
             <Tab.Screen name="Setting" component={SettingScreen} options={tabOptions.setting} />
           </>
         ) : (
-          <Tab.Screen name="Login" component={LoginScreen} />
+          <Tab.Screen name="Login" component={LoginScreen} options={tabOptions.login} />
         )}
       </Tab.Navigator>
     </NavigationContainer>
@@ -74,4 +74,10 @@ const tabOptions = {
       <Ionicons name="settings-sharp" size={size} color={color} />
     ),
   },
+  login: {
+    tabBarLabel: 'Login',
+    tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+      <Ionicons name="log-in-outline" size={size} color={color} />
+    ),
+  }
 }

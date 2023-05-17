@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import { runners } from './utils';
-import { getUserById, addRunner, removeRunner, changeRunnerPosition } from './utils';
+import { addRunner, removeRunner, changeRunnerPosition, findUser, movePaceMakers } from './utils';
 
 const app = express();
 const server = http.createServer(app);
@@ -25,9 +25,9 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
 
   socket.on('register_runner', async (data) => {
-    const user = await getUserById(data.userId)
+    const user = await findUser(data.userId)
     if(!user) return
-    addRunner(user, socket, data.randPosH)
+    addRunner(user, socket, data.randPosH, data.pace)
   });
 
   socket.on('change_runner_position', (data) => {
@@ -52,5 +52,6 @@ server.listen(PORT, () => {
 
 
 setInterval(() => {
+  movePaceMakers();
   io.emit('send_runners', runners);
 }, 1000);

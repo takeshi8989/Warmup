@@ -27,6 +27,20 @@ let r2: Runner = {
 runners.push(r)
 runners.push(r2)
 
+export const findUser = async (id: string): Promise<User> => {
+  if(!id.includes('paceMaker')) 
+    return await getUserById(id)
+
+  const user: User = {
+    id: id,
+    oauth_id: id,
+    name: 'Pace Maker',
+    email: '',
+    picture: ''
+  }
+  return user
+}
+
 
 export const getUserById = async (userId: string) => {
     try {
@@ -41,7 +55,7 @@ export const getUserById = async (userId: string) => {
     }
 }
 
-export const addRunner = (user: User, socket: Socket, randPosH: number) => {
+export const addRunner = (user: User, socket: Socket, randPosH: number, pace: number) => {
     const runner: Runner = {
         userId: user.oauth_id,
         socketId: socket.id,
@@ -49,7 +63,7 @@ export const addRunner = (user: User, socket: Socket, randPosH: number) => {
         picture: user.picture,
         positionH: randPosH,
         positionV: 0,
-        speed: 0
+        speed: pace == 0 ? 0 : 1000 / (pace * 60)
       }
       runners.push(runner)
 }
@@ -60,10 +74,19 @@ export const removeRunner = (socketId: string) => {
 
 export const changeRunnerPosition = (socketId: string, speed: number, distance: number) => {
     runners.forEach(runner => {
-        if (runner.socketId === socketId) {
-        runner.positionV = runner.positionV + distance
-        runner.speed = speed
+        if (runner.socketId === socketId && !runner.userId.includes('paceMaker')) {
+          runner.positionV = runner.positionV + distance
+          runner.speed = speed
         }
     })
 }
   
+export const movePaceMakers = () => {
+    runners = runners.map(runner => {
+        if (runner.userId.includes('paceMaker')) {
+          return {...runner, positionV: runner.positionV + runner.speed}
+        } else{
+          return runner
+        }
+    })
+}

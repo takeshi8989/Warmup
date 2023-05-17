@@ -31,45 +31,47 @@ const useFootstepsAudio = () => {
     
 
     const stopSound = async () => {
-        console.log(sound)
         if(sound) {
+            await sound.setVolumeAsync(0);
             await sound.stopAsync();
-            await sound.unloadAsync();
+            await sound.unloadAsync();  
+            setSound(null);
+            setSoundSrc('base')
         }
-        setSound(null);
     }
 
     const chooseAudio = async (nearbyRunners: Runner[]) => {
-        if(nearbyRunners.length <= 1|| !userInfo) {
-            await sound?.setVolumeAsync(0);
-            return
-        }
-        const me = nearbyRunners.filter(runner => runner.userId === userInfo.id)[0];
-        if(!me) {  
-            await sound?.setVolumeAsync(0);
-            return
-        }
+        try{
+            if(!sound) return
+            if(nearbyRunners.length <= 1|| !userInfo) {
+                await sound?.setVolumeAsync(0);
+                return
+            }
+            const me = nearbyRunners.filter(runner => runner.userId === userInfo.id)[0];
+            if(!me) {  
+                await sound?.setVolumeAsync(0);
+                return
+            }
 
-        await sound?.setVolumeAsync(1);
+            await sound?.setVolumeAsync(1);
 
-        const leftRunners = nearbyRunners.filter(runner => runner.positionH < me.positionH);
-        const rightRunners = nearbyRunners.filter(runner => runner.positionH > me.positionH);
-        if(soundSrc == 'left' && leftRunners.length > rightRunners.length) return
-        if(soundSrc == 'right' && rightRunners.length > leftRunners.length) return
+            const leftRunners = nearbyRunners.filter(runner => runner.positionH < me.positionH);
+            const rightRunners = nearbyRunners.filter(runner => runner.positionH > me.positionH);
+            if(soundSrc == 'left' && leftRunners.length > rightRunners.length) return
+            if(soundSrc == 'right' && rightRunners.length > leftRunners.length) return
 
-        const leftSrc = require('../../assets/audios/left_follow.mp3');
-        const rightSrc = require('../../assets/audios/right_follow.mp3');
+            const leftSrc = require('../../assets/audios/left_follow.mp3');
+            const rightSrc = require('../../assets/audios/right_follow.mp3');
 
-        if(leftRunners.length > rightRunners.length) setSoundSrc('left')
-        else setSoundSrc('right')
+            if(leftRunners.length > rightRunners.length) setSoundSrc('left')
+            else setSoundSrc('right')
 
-        
-        await sound?.stopAsync();
-        await sound?.unloadAsync();
-        await sound?.loadAsync(leftRunners.length > rightRunners.length ? leftSrc : rightSrc);
-        await sound?.playAsync();
-        // await sound?.unloadAsync();
-        // await sound?.loadAsync(leftSrc);
+            
+            await sound?.stopAsync();
+            await sound?.unloadAsync();
+            await sound?.loadAsync(leftRunners.length > rightRunners.length ? leftSrc : rightSrc);
+            await sound?.playAsync();
+        } catch(e){}
     }
 
     return { playSound, stopSound, chooseAudio }
