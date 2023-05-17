@@ -13,6 +13,7 @@ echo "Deploying locationWS.."
 task_family=$(grep "TASK_FAMILY=" .env | cut -d'=' -f2)
 service_name=$(grep "SERVICE_NAME=" .env | cut -d'=' -f2)
 cluster_name=$(grep "CLUSTER_NAME=" .env | cut -d'=' -f2)
+image_name=$(grep "IMAGE_NAME=" .env | cut -d'=' -f2)
 
 
 
@@ -20,9 +21,9 @@ function push_image_ecr() {
     echo "Logging into AWS ECR..."
     aws ecr get-login-password --region $aws_region | docker login --username AWS --password-stdin $aws_account_id.dkr.ecr.$aws_region.amazonaws.com
     echo "Building Docker image..."
-    docker build -t warmup .
-    docker tag warmup:latest $aws_account_id.dkr.ecr.$aws_region.amazonaws.com/warmup:latest
-    docker push $aws_account_id.dkr.ecr.$aws_region.amazonaws.com/warmup:latest
+    docker build -t $image_name .
+    docker tag $image_name:latest $aws_account_id.dkr.ecr.$aws_region.amazonaws.com/$image_name:latest
+    docker push $aws_account_id.dkr.ecr.$aws_region.amazonaws.com/$image_name:latest
 }
 
 
