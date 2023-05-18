@@ -5,6 +5,7 @@ import { isSignedInAtom } from './src/atoms/auth';
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SettingScreen from './src/screens/SettingScreen';
+import RecordScreen from './src/screens/RecordScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { socket } from './src/utils/socket'
@@ -50,6 +51,7 @@ export default function App() {
         {isSignedIn ? (
           <>
             <Tab.Screen name="Run" component={HomeScreen} options={tabOptions.home} />
+            <Tab.Screen name="Record" component={RecordScreen} options={tabOptions.record} />
             <Tab.Screen name="Setting" component={SettingScreen} options={tabOptions.setting} />
           </>
         ) : (
@@ -74,10 +76,16 @@ const tabOptions = {
       <Ionicons name="settings-sharp" size={size} color={color} />
     ),
   },
+  record: {
+    tabBarLabel: 'Record',
+    tabBarIcon: ({ color, size }: { color: string; size: number }) => (
+      <Ionicons name="ios-list" size={size} color={color} />
+    ),
+  },
   login: {
     tabBarLabel: 'Login',
     tabBarIcon: ({ color, size }: { color: string; size: number }) => (
       <Ionicons name="log-in-outline" size={size} color={color} />
-    ),
+    )
   }
 }

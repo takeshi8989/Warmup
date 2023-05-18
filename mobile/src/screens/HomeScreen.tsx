@@ -12,11 +12,14 @@ import useRunner from '../hooks/useRunner';
 import useFootstepsAudio from '../hooks/useFootstepsAudio';
 
 
+interface Props {
+    navigation: any
+}
 
 let images: number[] = []
 for(let i = ROAD_LENGTH_KM; i > 0; i--) images.push(i)
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation } : Props) => {
     const [runners, setRunners] = useAtom(runnersAtom)
     const scrollViewRef = useRef<ScrollView>(null);
     const { getNearbyRunners } = useRunner();
@@ -51,6 +54,7 @@ const HomeScreen = () => {
 
             <RunningButtons 
                 scrollViewRef={scrollViewRef}
+                navigation={navigation}
             />
         </View>
     );

@@ -11,4 +11,4 @@ export const watchTaskAtom = atom<Location.LocationSubscription | null>(null)
 export const paceAtom = atom<number | null>(null)
 export const activePaceAtom = atom<boolean>(false)
 
-export const runStartTimeAtom = atom<Date | null>(null)
+export const runStartTimeAtom = atom<Date>(new Date())

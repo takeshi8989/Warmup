@@ -4,12 +4,13 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { isSignedInAtom, userInfoAtom } from '../atoms/auth';
 import { RUNNER_SIZE } from '../utils/constants';
 import { Runner } from '../types/Runner';
-import { activePaceAtom, paceAtom } from '../atoms/runner';
+import { activePaceAtom, paceAtom, runnersAtom } from '../atoms/runner';
 
 interface Props {
     addNewRunner: () => void
     removeRunner: () => void
     getNearbyRunners: (runners: Runner[]) => Runner[]
+    getRunningDistanceKm: () => number
 }
 
 const useRunner = (): Props => {
@@ -18,6 +19,7 @@ const useRunner = (): Props => {
     const setIsSignedIn = useSetAtom(isSignedInAtom);
     const activePace = useAtomValue(activePaceAtom);
     const pace = useAtomValue(paceAtom)
+    const runners = useAtomValue(runnersAtom)
 
 
     const addNewRunner = () => {
@@ -54,7 +56,13 @@ const useRunner = (): Props => {
         return nearbyRunners
     }
 
-    return { addNewRunner, removeRunner, getNearbyRunners }
+    const getRunningDistanceKm = () => {
+        const myRunner = runners.find(runner => runner.userId === userInfo?.id)
+        if(!myRunner) return 0
+        return myRunner.positionV / 1000
+    }
+
+    return { addNewRunner, removeRunner, getNearbyRunners, getRunningDistanceKm }
 }
 
 export default useRunner;

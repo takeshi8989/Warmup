@@ -15,9 +15,10 @@ import useFootstepsAudio from '../hooks/useFootstepsAudio';
 
 interface Props {
     scrollViewRef: React.RefObject<ScrollView>
+    navigation: any
 }
 
-const RunningButtons = ({ scrollViewRef }: Props) => {
+const RunningButtons = ({ scrollViewRef, navigation }: Props) => {
     const  { playSound, stopSound } = useFootstepsAudio()
 
     const windowHeight = Dimensions.get('window').height
@@ -26,7 +27,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
     const userInfo = useAtomValue(userInfoAtom)
     const [startTime, setStartTime] = useAtom(runStartTimeAtom)
 
-    const { addNewRunner, removeRunner } = useRunner()
+    const { addNewRunner, removeRunner, getRunningDistanceKm } = useRunner()
     const { watchUserLocation, stopUserLocation } = useRunning()
 
     const scrollToBottom = () => {
@@ -82,10 +83,16 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
         setIsRunning(false)
         stopUserLocation()
         stopSound()
-        if(startTime) {
-            console.log((new Date().getTime() - startTime.getTime()) / 1000)
-        }
+        recordRun()
     }
+
+    const recordRun = () => {
+        const runTimeMin: number = Math.round((new Date().getTime() - startTime.getTime()) / 1000 / 60)
+        const runDistanceKm: number = Math.round(getRunningDistanceKm() * 10) / 10
+        console.log('runTimeMin', runTimeMin, 'runDistanceKm', runDistanceKm)
+        navigation.navigate('Record')
+    }
+    
 
 
     return (
