@@ -35,12 +35,12 @@ const useRunning = (): Props => {
         setWatchTask(watchLoc)
 
         // automove
-        // setInterval(() => {
-        //     socket.emit('change_runner_position', {
-        //         speed: 0,
-        //         distance: 10,
-        //     })
-        // }, 1000);
+        setInterval(() => {
+            socket.emit('change_runner_position', {
+                speed: 0,
+                distance: 5,
+            })
+        }, 1000);
     }
 
 

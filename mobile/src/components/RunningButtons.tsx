@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, Pressable, Alert ,StyleSheet, ScrollView, Dimensions } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useRunner from '../hooks/useRunner';
 import useRunning from '../hooks/useRunning';
 import { useAtom, useAtomValue } from 'jotai';
-import { isRunningAtom } from '../atoms/runner';
+import { isRunningAtom, runStartTimeAtom } from '../atoms/runner';
 import { runnersAtom } from '../atoms/runner';
 import { ROAD_LENGTH_KM, ROAD_IMAGE_HEIGHT } from '../utils/constants';
 import { userInfoAtom } from '../atoms/auth';
@@ -24,6 +24,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
     const [isRunning, setIsRunning] = useAtom(isRunningAtom)
     const runners = useAtomValue(runnersAtom)
     const userInfo = useAtomValue(userInfoAtom)
+    const [startTime, setStartTime] = useAtom(runStartTimeAtom)
 
     const { addNewRunner, removeRunner } = useRunner()
     const { watchUserLocation, stopUserLocation } = useRunning()
@@ -49,10 +50,7 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
             },
             {text: 'OK', onPress: () => {
                 console.log('stop running')
-                removeRunner()
-                setIsRunning(false)
-                stopUserLocation()
-                stopSound()
+                stopRunning()
             }},
         ]);
     }
@@ -66,7 +64,6 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
             {text: 'OK', onPress: () => {
                 console.log('start running')
                 startRunning()
-                playSound()
             }},
         ]);
     }
@@ -76,6 +73,18 @@ const RunningButtons = ({ scrollViewRef }: Props) => {
         scrollToBottom()
         setIsRunning(true)
         watchUserLocation()
+        playSound()
+        setStartTime(new Date())
+    }
+
+    const stopRunning = () => {
+        removeRunner()
+        setIsRunning(false)
+        stopUserLocation()
+        stopSound()
+        if(startTime) {
+            console.log((new Date().getTime() - startTime.getTime()) / 1000)
+        }
     }
 
 
