@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useAtom, useSetAtom } from 'jotai';
-import { isSignedInAtom, userInfoAtom, authAtom, requireTokenRereshAtom } from '../atoms/auth';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { isSignedInAtom, authAtom, requireTokenRereshAtom } from '../atoms/auth';
+import { View, StyleSheet, Button } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,7 +16,6 @@ WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = () => {
     const setIsSignedIn = useSetAtom(isSignedInAtom);
-    const [userInfo, setUserInfo] = useAtom(userInfoAtom);
     const [auth, setAuth] = useAtom(authAtom);
     const [requireRefresh, setRequireRefresh] = useAtom(requireTokenRereshAtom);
 
@@ -36,7 +35,6 @@ const LoginScreen = () => {
 
 
     useEffect(() => {
-      console.log("Response: ", request)
         if (response?.type === "success" && response.authentication) {
           setAuth(response.authentication)
           const persistAuth = async () => {
@@ -73,7 +71,6 @@ const LoginScreen = () => {
             setIsSignedIn(true);
           }
           else {
-            console.log("HELPME")
             setIsSignedIn(false);
             setAuth(null);
           }

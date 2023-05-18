@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Audio } from 'expo-av';
 import { Runner } from '../types/Runner';
 import { useAtom, useAtomValue } from 'jotai';

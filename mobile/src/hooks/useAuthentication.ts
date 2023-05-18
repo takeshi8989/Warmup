@@ -1,7 +1,7 @@
 import { useAtom, useSetAtom } from 'jotai';
 import { isSignedInAtom, userInfoAtom, authAtom, requireTokenRereshAtom } from '../atoms/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { EXPO_CLIENT_ID, CLIENT_SECRET, API_SERVER_URL, API_SERVER_STAGE, IOS_CLIENT_ID, ANDROID_CLIENT_ID } from '@env';
+import { EXPO_CLIENT_ID, CLIENT_SECRET, API_SERVER_URL, API_SERVER_STAGE } from '@env';
 import * as AuthSession from 'expo-auth-session';
 import axios from 'axios';
 import { User } from '../types/User';
@@ -15,9 +15,9 @@ interface Props {
 
 const useAuthentication = (): Props => {
     const setIsSignedIn = useSetAtom(isSignedInAtom);
-    const [userInfo, setUserInfo] = useAtom(userInfoAtom);
+    const setUserInfo = useSetAtom(userInfoAtom);
     const [auth, setAuth] = useAtom(authAtom);
-    const [requireRefresh, setRequireRefresh] = useAtom(requireTokenRereshAtom);
+    const setRequireRefresh = useSetAtom(requireTokenRereshAtom);
 
     const userSignIn = async (user: User) => {
       const data = {
@@ -52,7 +52,6 @@ const useAuthentication = (): Props => {
 
     const refreshToken = async () => {
         try {
-          console.log(auth)
           const tokenResult = await AuthSession.refreshAsync({
             clientId: EXPO_CLIENT_ID,
             clientSecret: CLIENT_SECRET,

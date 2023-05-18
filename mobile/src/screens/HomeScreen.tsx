@@ -1,17 +1,15 @@
-import React, {useRef, useEffect} from 'react';
-import { ScrollView, StyleSheet, View , Text, Button, Pressable} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useRef, useEffect } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import RunnerIcon from '../components/RunnerIcon';
 import { Runner } from '../types/Runner';
 import RunningButtons from '../components/RunningButtons';
 import RoadImage from '../components/RoadImage';
 import { ROAD_LENGTH_KM } from '../utils/constants';
-import { nearbyRunnersAtom, runnersAtom } from '../atoms/runner';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { runnersAtom } from '../atoms/runner';
+import { useAtom } from 'jotai';
 import { socket } from '../utils/socket';
 import useRunner from '../hooks/useRunner';
 import useFootstepsAudio from '../hooks/useFootstepsAudio';
-import { isSignedInAtom, userInfoAtom } from '../atoms/auth';
 
 
 
@@ -22,8 +20,7 @@ const HomeScreen = () => {
     const [runners, setRunners] = useAtom(runnersAtom)
     const scrollViewRef = useRef<ScrollView>(null);
     const { getNearbyRunners } = useRunner();
-    const { playSound, chooseAudio } = useFootstepsAudio();
-    const userInfo = useAtomValue(userInfoAtom)
+    const { chooseAudio } = useFootstepsAudio();
 
     const receiveRunners = (runners: Runner[]) => {
         setRunners(runners)

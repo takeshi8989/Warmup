@@ -3,26 +3,11 @@ import React from 'react'
 import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { userInfoAtom } from '../atoms/auth';
-import axios from 'axios';
-import { API_SERVER_URL, API_SERVER_STAGE } from '@env';
 import { activePaceAtom, paceAtom } from '../atoms/runner';
 
 const SettingScreen = () => {
-    const [userInfo, setUserInfo] = useAtom(userInfoAtom)
     const [pace, setPace] = useAtom(paceAtom)
     const [activePace, setActivePace] = useAtom(activePaceAtom)
-
-    const handleSave = async () => {
-        // try {
-        //     const res = await axios.put(`${API_SERVER_URL}/${API_SERVER_STAGE}/users/${userInfo?.id}`, {pace: pace})
-        //     if(userInfo) {
-        //         setUserInfo({...userInfo, pace: pace})
-        //     }
-        // } catch (error) {
-        //     console.log(error)
-        // }
-    }
 
   return (
     <SafeAreaView style={styles.container}>

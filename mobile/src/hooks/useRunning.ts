@@ -2,9 +2,8 @@ import * as Location from 'expo-location';
 import { socket } from '../utils/socket';
 import getDistanceFromLatLonInKm  from '../utils/functions';
 import { useState } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { watchTaskAtom } from '../atoms/runner';
-import { userInfoAtom } from '../atoms/auth';
 
 
 
@@ -21,8 +20,7 @@ interface Position {
 const useRunning = (): Props => {
     const [preCoords, setPreCoords] = useState<Position | null>(null);
     const [watchTask, setWatchTask] = useAtom(watchTaskAtom)
-    const userInfo = useAtomValue(userInfoAtom)
-
+    
     const watchUserLocation = async () => {
         let watchLoc = await Location.watchPositionAsync({
                 accuracy: Location.Accuracy.Highest,
